@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MERIDIAN — AI EDITION｜2026年7月号 Sharp Linen</title>
+<style>
+/* ============================================================
+   DESIGN TOKENS — Modern Minimal Menswear (Hard / Cool)
+   ============================================================ */
+:root {
+  /* light (default) */
+  --bg:        #F4F5F6;
+  --surface:   #FFFFFF;
+  --surface-2: #E8EAED;
+  --text:      #16191D;
+  --text-sub:  #5A636C;
+  --border:    #D5D9DD;
+  --accent:    #3E5C76;
+  --accent-soft:#A7B6C4;
+  --sub:       #4A5560;
+
+  /* type */
+  --font-serif: "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-sans:  system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif;
+
+  /* spacing scale (8pt) */
+  --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 40px; --sp-5: 64px; --sp-6: 96px;
+
+  /* layout */
+  --maxw: 1200px;
+  --gutter: clamp(20px, 5vw, 80px);
+  --radius: 3px;
+  --radius-lg: 6px;
+
+  /* motion */
+  --ease: cubic-bezier(.22,.61,.36,1);
+
+  /* shared static grain texture (pre-baked 64×64 noise PNG, tiled).
+     全 .ph で共有 → 要素ごとのフィルタ合成が走らず軽い。外部依存ゼロ。 */
+  --grain: url("data:image/png;base64,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");
+}
+[data-theme="dark"] {
+  --bg:        #0E1114;
+  --surface:   #181C21;
+  --surface-2: #14181C;
+  --text:      #E8ECEF;
+  --text-sub:  #99A2AB;
+  --border:    #2A3138;
+  --accent:    #7E9DB8;
+  --accent-soft:#374653;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.75;
+  transition: background .4s var(--ease), color .4s var(--ease);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+h1,h2,h3,.display { font-family: var(--font-serif); font-weight: 400; margin: 0; }
+.display { font-size: clamp(48px,9vw,104px); line-height: 1.02; letter-spacing: -.02em; }
+.eyebrow {
+  font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--text-sub);
+  margin: 0;
+}
+
+.wrap { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: var(--sp-6); }
+.section__head { margin-bottom: var(--sp-4); }
+.section__head h2 { font-size: 28px; line-height: 1.2; letter-spacing: -.01em; margin-top: 6px; }
+
+/* reveal */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ============================================================
+   PHOTO PLACEHOLDER (.ph) — AI生成写真風（メンズ・クール基調）
+   ============================================================ */
+.ph {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background:
+    radial-gradient(120% 80% at 70% 18%, rgba(255,255,255,.32), transparent 50%),
+    radial-gradient(140% 120% at 25% 85%, #3e5c76 0%, #4f6378 35%, transparent 70%),
+    linear-gradient(135deg, #5a6873 0%, #3c4750 45%, #20262c 100%);
+  color: #fff;
+}
+.ph::before {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  opacity:.13; mix-blend-mode:overlay;
+  background-image: var(--grain);
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+.ph::after {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background: linear-gradient(to top, rgba(8,11,14,.5), transparent 45%);
+}
+.ph-label {
+  position:absolute; left:12px; top:12px; z-index:2;
+  font:600 10px/1 var(--font-sans); letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.85); padding:5px 9px;
+  background:rgba(0,0,0,.28); backdrop-filter:blur(4px); border-radius:2px;
+}
+/* color variations (menswear cool/neutral) */
+.ph--slate { background:
+  radial-gradient(120% 80% at 70% 18%, rgba(255,255,255,.3), transparent 50%),
+  linear-gradient(135deg,#5b6f82 0%,#3e5266 50%,#26333f 100%); }
+.ph--mono  { background:
+  radial-gradient(120% 80% at 60% 20%, rgba(255,255,255,.34), transparent 50%),
+  linear-gradient(160deg,#cfd3d7 0%,#9aa0a6 55%,#5b6168 100%); }
+.ph--ink   { background:
+  radial-gradient(120% 80% at 65% 22%, rgba(255,255,255,.24), transparent 50%),
+  linear-gradient(140deg,#3a4047 0%,#23282e 50%,#13161a 100%); }
+.ph--olive { background:
+  radial-gradient(120% 80% at 72% 16%, rgba(255,255,255,.28), transparent 50%),
+  linear-gradient(150deg,#7d7f63 0%,#5a5d47 50%,#363a2c 100%); }
+.ph--sand  { background:
+  radial-gradient(120% 80% at 68% 20%, rgba(255,255,255,.34), transparent 50%),
+  linear-gradient(135deg,#cabfa9 0%,#a89679 50%,#6f6248 100%); }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--sp-2) var(--gutter);
+  background: transparent;
+  transition: background .4s var(--ease), border-color .4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.header--scrolled {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.header__logo {
+  font-family: var(--font-serif); font-size: 22px; letter-spacing: .34em;
+  text-transform: uppercase; text-decoration: none; white-space: nowrap;
+}
+.header nav { display: flex; gap: var(--sp-3); }
+.header nav a { font-size: 13px; letter-spacing: .06em; color: var(--text-sub); text-decoration: none; transition: color .3s var(--ease); }
+.header nav a:hover { color: var(--text); }
+.header__tools { display: flex; align-items: center; gap: var(--sp-2); }
+.theme-toggle {
+  background: none; border: 1px solid var(--border); color: var(--text);
+  width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+  font-size: 15px; transition: border-color .3s var(--ease), transform .3s var(--ease);
+}
+.theme-toggle:hover { border-color: var(--accent); transform: rotate(20deg); }
+@media (max-width: 760px) { .header nav { display: none; } }
+
+/* ============================================================
+   HERO COVER
+   ============================================================ */
+.hero { position: relative; height: min(100vh,760px); display: grid; align-items: end; margin-top: -71px; }
+.hero .ph { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0; }
+.hero__copy { position: relative; z-index: 2; color: #fff; padding: var(--gutter); padding-bottom: var(--sp-5); max-width: var(--maxw); margin-inline: auto; width: 100%; }
+.hero__copy .eyebrow { color: rgba(255,255,255,.78); }
+.hero__copy .display { max-width: 14ch; margin-top: var(--sp-2); }
+.hero__sub { font-family: var(--font-serif); font-style: italic; font-size: clamp(16px,2.4vw,22px); margin-top: var(--sp-2); color: rgba(255,255,255,.9); }
+.hero__meta { display: flex; gap: var(--sp-3); flex-wrap: wrap; margin-top: var(--sp-3); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.72); }
+.hero__scroll { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 2; color: rgba(255,255,255,.85); font-size: 11px; letter-spacing: .2em; text-align: center; }
+.hero__scroll span { display: block; font-size: 18px; animation: bob 1.8s var(--ease) infinite; }
+@keyframes bob { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(6px);} }
+.ai-edition {
+  display: inline-block; font-size: 10px; letter-spacing: .3em; font-weight: 600;
+  padding: 5px 12px; border: 1px solid rgba(255,255,255,.55); border-radius: 2px;
+  text-transform: uppercase; color: #fff;
+}
+
+/* ============================================================
+   CONTENTS
+   ============================================================ */
+.toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: var(--sp-3); }
+.toc__item { display: grid; grid-template-columns: 84px 1fr; gap: var(--sp-2); align-items: center; text-decoration: none; color: inherit; padding: var(--sp-1) 0; border-top: 1px solid var(--border); transition: border-color .3s var(--ease); }
+.toc__item:hover { border-color: var(--accent); }
+.toc__item:hover .toc__title { color: var(--accent); }
+.toc__thumb { aspect-ratio: 1; }
+.toc__no { font-family: var(--font-serif); font-size: 13px; color: var(--text-sub); }
+.toc__title { font-family: var(--font-serif); font-size: 18px; line-height: 1.25; transition: color .3s var(--ease); }
+.toc__cat { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-sub); }
+
+/* ============================================================
+   EDITORIAL FEATURE
+   ============================================================ */
+.editorial { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--sp-5); align-items: center; }
+.editorial__visual .ph { aspect-ratio: 4/5; }
+.editorial__lead h1 { font-size: clamp(34px,5vw,56px); line-height: 1.08; letter-spacing: -.015em; margin-top: var(--sp-1); }
+.editorial__lead .sub { font-family: var(--font-serif); font-style: italic; color: var(--text-sub); font-size: 20px; margin-top: var(--sp-2); }
+.editorial__credit { margin-top: var(--sp-3); font-size: 12px; letter-spacing: .08em; color: var(--text-sub); text-transform: uppercase; }
+.editorial__strip { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--sp-2); margin-top: var(--sp-4); }
+@media (max-width: 860px) { .editorial { grid-template-columns: 1fr; gap: var(--sp-4); } }
+
+/* ============================================================
+   EDITORIAL FEED (SSENSE型 縦流し)
+   ============================================================ */
+.feed { display: grid; gap: var(--sp-5); }
+.feed__card { display: grid; grid-template-columns: 1.15fr 1fr; gap: var(--sp-4); align-items: center; text-decoration: none; color: inherit; }
+.feed__card:nth-child(even) { grid-template-columns: 1fr 1.15fr; }
+.feed__card:nth-child(even) .feed__visual { order: 2; }
+.feed__visual .ph { aspect-ratio: 4/5; transition: transform .6s var(--ease); }
+.feed__card:hover .feed__visual .ph { transform: scale(1.02); }
+.feed__cat { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+.feed__title { font-family: var(--font-serif); font-size: clamp(26px,3.4vw,40px); line-height: 1.12; letter-spacing: -.01em; margin-top: var(--sp-1); }
+.feed__lead { color: var(--text-sub); margin-top: var(--sp-2); max-width: 46ch; }
+.feed__meta { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-3); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-sub); }
+.feed__meta span { position: relative; }
+.feed__meta span + span::before { content: "·"; margin-right: var(--sp-2); color: var(--border); }
+.feed__more { display: inline-block; margin-top: var(--sp-3); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--text); position: relative; }
+.feed__more::after { content:""; position:absolute; left:0; bottom:-3px; width:100%; height:1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+.feed__card:hover .feed__more::after { transform: scaleX(1); }
+@media (max-width: 860px) {
+  .feed__card, .feed__card:nth-child(even) { grid-template-columns: 1fr; gap: var(--sp-3); }
+  .feed__card:nth-child(even) .feed__visual { order: 0; }
+}
+
+/* ============================================================
+   AI MODEL (専属バーチャルモデル人格化)
+   ============================================================ */
+.model { display: grid; grid-template-columns: .85fr 1fr; gap: var(--sp-5); align-items: center;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-4); }
+.model__visual .ph { aspect-ratio: 3/4; }
+.model__name { font-family: var(--font-serif); font-size: clamp(32px,5vw,52px); line-height: 1.05; margin-top: var(--sp-1); }
+.model__role { font-family: var(--font-serif); font-style: italic; font-size: 19px; color: var(--text-sub); margin-top: var(--sp-1); }
+.model__bio { color: var(--text-sub); margin-top: var(--sp-3); max-width: 50ch; }
+.model__facts { list-style: none; padding: 0; margin: var(--sp-3) 0 0; }
+.model__facts li { padding: var(--sp-1) 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; gap: var(--sp-2); font-size: 14px; }
+.model__facts li b { font-weight: 600; }
+.model__facts li span { color: var(--text-sub); }
+@media (max-width: 860px) { .model { grid-template-columns: 1fr; gap: var(--sp-4); } }
+
+/* ============================================================
+   SHOPPABLE (ホットスポット + 購入小窓)
+   ============================================================ */
+.shoppable { position: relative; }
+.hotspot {
+  position: absolute; z-index: 4; width: 28px; height: 28px; transform: translate(-50%,-50%);
+  border-radius: 50%; border: none; cursor: pointer; padding: 0;
+  background: rgba(255,255,255,.92); color: #16191D;
+  font: 600 16px/1 var(--font-sans);
+  box-shadow: 0 2px 10px rgba(0,0,0,.28);
+  display: grid; place-items: center;
+  transition: transform .3s var(--ease), background .3s var(--ease);
+}
+.hotspot::after { content:""; position:absolute; inset:-6px; border-radius:50%; border:1px solid rgba(255,255,255,.6); animation: pulse 2.4s var(--ease) infinite; }
+@keyframes pulse { 0%{ transform: scale(.7); opacity:.9;} 100%{ transform: scale(1.25); opacity:0;} }
+.hotspot:hover, .hotspot[aria-expanded="true"] { background: var(--accent); color: #fff; transform: translate(-50%,-50%) scale(1.12); }
+.shop-pop {
+  position: absolute; z-index: 6; width: 210px;
+  left: 50%; top: calc(100% + 12px); transform: translateX(-50%) translateY(6px);
+  background: var(--surface); color: var(--text); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  padding: var(--sp-2); text-align: left;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .28s var(--ease), transform .28s var(--ease), visibility .28s;
+}
+.hotspot[aria-expanded="true"] + .shop-pop { opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+.shop-pop__brand { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-sub); }
+.shop-pop__name { font-family: var(--font-serif); font-size: 16px; line-height: 1.3; margin-top: 2px; }
+.shop-pop__row { display: flex; align-items: baseline; justify-content: space-between; margin-top: var(--sp-1); }
+.shop-pop__price { color: var(--accent); font-weight: 600; }
+.shop-pop__buy { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-sub); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 1px; }
+.shop-hint { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-sub); margin-top: var(--sp-2); }
+
+/* ============================================================
+   LOOKBOOK (horizontal scroll)
+   ============================================================ */
+.lookbook__track {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 30%);
+  gap: var(--sp-3); overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-bottom: var(--sp-2); margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
+  scrollbar-width: thin;
+}
+.look { scroll-snap-align: start; text-decoration: none; color: inherit; }
+.look .ph { transition: transform .6s var(--ease); }
+.look:hover .ph { transform: scale(1.03); }
+.look h3 { margin-top: var(--sp-2); font-size: 20px; }
+.look .eyebrow { margin-top: var(--sp-1); display: block; }
+.look__dots { margin-top: 6px; font-size: 12px; color: var(--text-sub); }
+@media (max-width: 760px) { .lookbook__track { grid-auto-columns: 78%; } }
+
+/* ============================================================
+   ITEM FOCUS (grid)
+   ============================================================ */
+.grid-items { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); }
+.item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+        padding: var(--sp-2); transition: border-color .3s var(--ease), transform .3s var(--ease); }
+.item:hover { border-color: var(--accent-soft); transform: translateY(-3px); }
+.item .ph { aspect-ratio: 4/5; }
+.item__brand { font-size: 13px; letter-spacing: .04em; color: var(--text-sub); margin-top: var(--sp-2); }
+.item__name { font-family: var(--font-serif); font-size: 18px; line-height: 1.3; margin-top: 2px; }
+.item__row { display: flex; align-items: baseline; justify-content: space-between; margin-top: var(--sp-1); }
+.item__price { color: var(--accent); font-weight: 600; }
+.item__view { font-size: 12px; letter-spacing: .06em; color: var(--text-sub); text-decoration: none; position: relative; }
+.item__view::after { content:""; position:absolute; left:0; bottom:-2px; width:0; height:1px; background: var(--accent); transition: width .3s var(--ease); }
+.item:hover .item__view::after { width: 100%; }
+.item__tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--sp-1); }
+.tag { font-size: 11px; letter-spacing: .04em; color: var(--text-sub); background: var(--surface-2); padding: 3px 8px; border-radius: 999px; }
+
+/* ============================================================
+   COLUMN / ARTICLE
+   ============================================================ */
+.article { max-width: 64ch; margin-inline: auto; }
+.article p { margin-block: var(--sp-2); }
+.article > p:first-of-type::first-letter {
+  font-family: var(--font-serif); font-size: 3.4em; line-height: .8;
+  float: left; margin: 6px 10px 0 0; color: var(--accent);
+}
+.article blockquote {
+  font-family: var(--font-serif); font-style: italic; font-size: 24px;
+  border-left: 2px solid var(--accent); padding-left: var(--sp-2); color: var(--text);
+  margin: var(--sp-3) 0;
+}
+.article__byline { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-sub); margin-top: var(--sp-3); }
+
+/* trend chips */
+.trend { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); align-items: center; }
+.palette { display: flex; gap: var(--sp-1); margin-top: var(--sp-3); flex-wrap: wrap; }
+.swatch { width: 56px; }
+.swatch i { display: block; height: 56px; border-radius: var(--radius); border: 1px solid var(--border); }
+.swatch span { font-size: 10px; letter-spacing: .04em; color: var(--text-sub); margin-top: 6px; display: block; }
+.trend__keys { list-style: none; padding: 0; margin: var(--sp-2) 0 0; }
+.trend__keys li { padding: var(--sp-1) 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
+.trend__keys li span { color: var(--text-sub); font-size: 13px; }
+@media (max-width: 760px) { .trend { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   AI BANNER (生成演出)
+   ============================================================ */
+.ai-banner { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-4); text-align: center; }
+.ai-banner h2 { font-size: 28px; }
+.ai-banner p { color: var(--text-sub); max-width: 52ch; margin: var(--sp-1) auto var(--sp-3); }
+.btn-ai { font: 600 13px var(--font-sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer;
+  background: var(--accent); color: #fff; border: none; padding: 14px 28px; border-radius: 2px; transition: opacity .3s var(--ease); }
+.btn-ai:hover { opacity: .88; }
+.btn-ai[disabled] { opacity: .6; cursor: progress; }
+.ai-out { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--sp-2); margin-top: var(--sp-3); }
+.ai-out .ph { aspect-ratio: 3/4; opacity: 0; transition: opacity .6s var(--ease); }
+.ai-out .ph.show { opacity: 1; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer { border-top: 1px solid var(--border); padding-block: var(--sp-5); margin-top: var(--sp-5); }
+.footer__grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--sp-4); }
+.footer__logo { font-family: var(--font-serif); font-size: 24px; letter-spacing: .34em; text-transform: uppercase; }
+.footer__grid h4 { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--text-sub); margin: 0 0 var(--sp-2); }
+.footer__grid ul { list-style: none; padding: 0; margin: 0; }
+.footer__grid li a { color: var(--text-sub); text-decoration: none; font-size: 14px; line-height: 2; transition: color .3s var(--ease); }
+.footer__grid li a:hover { color: var(--accent); }
+.footer__base { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-5); padding-top: var(--sp-2); border-top: 1px solid var(--border); font-size: 12px; color: var(--text-sub); letter-spacing: .04em; }
+@media (max-width: 760px) { .footer__grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-theme="light">
+
+<!-- ============================================================
+     HEADER / NAV
+     ============================================================ -->
+<header class="header" id="header">
+  <a href="#cover" class="header__logo">Meridian</a>
+  <nav>
+    <a href="#contents">Contents</a>
+    <a href="#editorial-feed">Stories</a>
+    <a href="#feature">Feature</a>
+    <a href="#lookbook">Lookbook</a>
+    <a href="#items">Items</a>
+    <a href="#column">Column</a>
+    <a href="flip.html">スライドで見る →</a>
+  </nav>
+  <div class="header__tools">
+    <span class="eyebrow" style="display:none">AI</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="テーマ切替">◑</button>
+  </div>
+</header>
+
+<!-- ============================================================
+     1. COVER HERO
+     ============================================================ -->
+<section class="hero" id="cover">
+  <figure class="ph ph--slate" data-ai-prompt="cinematic full-body Japanese male fashion model in tailored slate-blue linen suit, sharp silhouette, cool grey studio light, architectural minimal editorial cover, GQ Japan style, shot on film">
+    <span class="ph-label">AI · Cover Story</span>
+  </figure>
+  <div class="hero__copy">
+    <span class="ai-edition">AI Edition</span>
+    <p class="eyebrow" style="margin-top:var(--sp-2)">Meridian · 2026年7月号 — Issue No.07</p>
+    <h1 class="display">Sharp<br>Linen</h1>
+    <p class="hero__sub">硬質に、軽やかに。夏のテーラリング。</p>
+    <div class="hero__meta">
+      <span>Cover Model — Ren</span>
+      <span>Styling — AI Editor</span>
+      <span>Accent — Slate Blue</span>
+    </div>
+  </div>
+  <div class="hero__scroll">SCROLL<span>↓</span></div>
+</section>
+
+<!-- ============================================================
+     2. CONTENTS
+     ============================================================ -->
+<section class="section" id="contents">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <p class="eyebrow">In This Issue</p>
+      <h2>目次 — Contents</h2>
+    </div>
+    <div class="toc reveal">
+      <a class="toc__item" href="#editorial-feed">
+        <figure class="ph ph--ink toc__thumb" data-ai-prompt="editorial menswear cover story, cool light, male model in linen suit"></figure>
+        <div><p class="toc__no">P.008</p><p class="toc__cat">Stories</p><p class="toc__title">今号のエディトリアル・ストーリーズ</p></div>
+      </a>
+      <a class="toc__item" href="#feature">
+        <figure class="ph ph--mono toc__thumb" data-ai-prompt="linen setup menswear flatlay, cool daylight"></figure>
+        <div><p class="toc__no">P.012</p><p class="toc__cat">Editorial</p><p class="toc__title">リネンセットアップで魅せる、夏の仕立て</p></div>
+      </a>
+      <a class="toc__item" href="#lookbook">
+        <figure class="ph ph--slate toc__thumb" data-ai-prompt="six full body menswear looks lineup, editorial"></figure>
+        <div><p class="toc__no">P.028</p><p class="toc__cat">Lookbook</p><p class="toc__title">AI ルックブック：6つの夏スタイル</p></div>
+      </a>
+      <a class="toc__item" href="#items">
+        <figure class="ph ph--sand toc__thumb" data-ai-prompt="menswear accessories product shots, leather sneakers, watch"></figure>
+        <div><p class="toc__no">P.046</p><p class="toc__cat">Item Focus</p><p class="toc__title">この夏の相棒、硬派な名品たち</p></div>
+      </a>
+      <a class="toc__item" href="#trend">
+        <figure class="ph ph--olive toc__thumb" data-ai-prompt="menswear trend color palette swatches editorial"></figure>
+        <div><p class="toc__no">P.060</p><p class="toc__cat">Trend Report</p><p class="toc__title">2026 Summer キーワード &amp; カラー</p></div>
+      </a>
+      <a class="toc__item" href="#ai-generate">
+        <figure class="ph ph--slate toc__thumb" data-ai-prompt="AI generated menswear outfit grid concept"></figure>
+        <div><p class="toc__no">P.072</p><p class="toc__cat">AI Studio</p><p class="toc__title">AI が即興でコーデを生成する</p></div>
+      </a>
+      <a class="toc__item" href="#column">
+        <figure class="ph ph--mono toc__thumb" data-ai-prompt="quiet menswear portrait, cool natural light"></figure>
+        <div><p class="toc__no">P.084</p><p class="toc__cat">Column</p><p class="toc__title">AIエディターが語る「削ぎ落とす美学」</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     2.5 EDITORIAL FEED (SSENSE型 縦流し)
+     ============================================================ -->
+<section class="section" id="editorial-feed">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <p class="eyebrow">Read · Stories</p>
+      <h2>今号のエディトリアル・ストーリーズ</h2>
+    </div>
+    <div class="feed">
+
+      <a class="feed__card reveal" href="#feature" data-ai-prompt="editorial wide shot, Japanese male model in slate-blue linen suit by concrete wall, cool morning light, magazine story opener, film grain">
+        <div class="feed__visual">
+          <figure class="ph ph--mono"><span class="ph-label">AI · Story 01</span></figure>
+        </div>
+        <div>
+          <p class="feed__cat">Editorial</p>
+          <h3 class="feed__title">リネンで仕立てる、<br>夏のテーラリング</h3>
+          <p class="feed__lead">軽いのに、崩れない。リネンのセットアップを主役に、ジャケットの肩線で輪郭を立てる。涼やかさと硬派さを両立する夏の着こなし論。</p>
+          <div class="feed__meta"><span>AI Editor — Axis</span><span>読了 約4分</span></div>
+          <span class="feed__more">Read the story →</span>
+        </div>
+      </a>
+
+      <a class="feed__card reveal" href="#lookbook" data-ai-prompt="editorial lifestyle photo, male model walking sunlit street in olive utility jacket, candid motion, urban summer mood, cool muted grade">
+        <div class="feed__visual">
+          <figure class="ph ph--olive"><span class="ph-label">AI · Story 02</span></figure>
+        </div>
+        <div>
+          <p class="feed__cat">Lookbook Story</p>
+          <h3 class="feed__title">オリーブが効く、<br>都市のユーティリティ</h3>
+          <p class="feed__lead">武骨さの中に上品さを宿すオリーブ。6つのルックで巡る、肩の力を抜いた夏の街の装い。</p>
+          <div class="feed__meta"><span>Styling — Kai</span><span>読了 約3分</span></div>
+          <span class="feed__more">Read the story →</span>
+        </div>
+      </a>
+
+      <a class="feed__card reveal" href="#trend" data-ai-prompt="trend mood board flatlay, charcoal slate-blue ink draped fabrics, hard shadows, editorial color study menswear">
+        <div class="feed__visual">
+          <figure class="ph ph--ink"><span class="ph-label">AI · Story 03</span></figure>
+        </div>
+        <div>
+          <p class="feed__cat">Trend Report</p>
+          <h3 class="feed__title">差し色は、<br>金属の一点で。</h3>
+          <p class="feed__lead">スレートブルーを軸に据える引き算の配色術。時計やバックルの金属感を一点投じる、2026年夏のキーワードをAIが読み解く。</p>
+          <div class="feed__meta"><span>AI Editor — Axis</span><span>読了 約5分</span></div>
+          <span class="feed__more">Read the story →</span>
+        </div>
+      </a>
+
+      <a class="feed__card reveal" href="#column" data-ai-prompt="quiet menswear portrait, male model in cool side window light, contemplative editorial close-up, muted charcoal palette">
+        <div class="feed__visual">
+          <figure class="ph ph--mono"><span class="ph-label">AI · Story 04</span></figure>
+        </div>
+        <div>
+          <p class="feed__cat">Column</p>
+          <h3 class="feed__title">「削ぎ落とす」<br>ということ</h3>
+          <p class="feed__lead">何を着るかより、何を持たないか。専属AIエディターが綴る、男の引き算の美学についての短いエッセイ。</p>
+          <div class="feed__meta"><span>Text — AI Editor Axis</span><span>読了 約2分</span></div>
+          <span class="feed__more">Read the story →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3. EDITORIAL FEATURE
+     ============================================================ -->
+<section class="section" id="feature">
+  <div class="wrap">
+    <div class="editorial">
+      <div class="editorial__visual reveal">
+        <figure class="ph ph--mono" data-ai-prompt="editorial menswear photo, model in slate-blue linen blazer and tapered trousers, standing by a concrete pillar in cool daylight, hard shadows, minimalist, 4x5 film">
+          <span class="ph-label">AI · Editorial</span>
+        </figure>
+      </div>
+      <div class="editorial__lead reveal">
+        <p class="eyebrow">Feature — Editorial</p>
+        <h1>リネンで仕立てる、<br>夏のテーラリング</h1>
+        <p class="sub">軽さと硬派さを両立する、抜けの効いた装い。</p>
+        <p>今季の軸は、崩れない「リネン」。だらしなく見せない。麻のセットアップに、ジャケットの肩線で輪郭を立て、足元はレザースニーカーで適度に外す。差し色は冷たいスレートブルーを一点だけ。削ぎ落とす美学が、夏のあなたを静かに鋭く際立たせる。</p>
+        <p class="editorial__credit">Photo · AI　Styling · AI Editor　Model · Ren</p>
+      </div>
+    </div>
+    <div class="editorial__strip reveal">
+      <figure class="ph ph--slate" data-ai-prompt="close up of linen blazer lapel detail, cool light"><span class="ph-label">AI</span></figure>
+      <figure class="ph ph--sand" data-ai-prompt="tapered linen trousers walking shot, motion blur, urban"><span class="ph-label">AI</span></figure>
+      <figure class="ph ph--ink" data-ai-prompt="leather sneaker and steel watch still life, cool tone"><span class="ph-label">AI</span></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.5 AI MODEL (専属バーチャルモデル + Shoppable)
+     ============================================================ -->
+<section class="section" id="ai-model">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <p class="eyebrow">This Month's Muse</p>
+      <h2>今月の専属AIモデル</h2>
+    </div>
+    <div class="model reveal">
+      <div class="model__visual shoppable" id="renShoppable">
+        <figure class="ph ph--slate" data-ai-prompt="full-body portrait of Ren, signature virtual AI male fashion model, Japanese features, slate-blue linen blazer, tapered trousers, white leather sneakers, steel diver watch, cool architectural editorial light, recurring cover muse">
+          <span class="ph-label">AI · Muse Ren</span>
+        </figure>
+        <!-- Shoppable hotspots: 着用アイテム -->
+        <button class="hotspot" style="left:50%; top:30%" aria-expanded="false" aria-label="着用アイテムを見る">+</button>
+        <div class="shop-pop">
+          <p class="shop-pop__brand">AXIS</p>
+          <p class="shop-pop__name">リネン テーラードジャケット</p>
+          <div class="shop-pop__row"><span class="shop-pop__price">¥38,000</span><a class="shop-pop__buy" href="#items">Shop →</a></div>
+        </div>
+        <button class="hotspot" style="left:46%; top:64%" aria-expanded="false" aria-label="着用アイテムを見る">+</button>
+        <div class="shop-pop">
+          <p class="shop-pop__brand">FORGE</p>
+          <p class="shop-pop__name">テーパード リネンパンツ</p>
+          <div class="shop-pop__row"><span class="shop-pop__price">¥19,800</span><a class="shop-pop__buy" href="#items">Shop →</a></div>
+        </div>
+        <button class="hotspot" style="left:30%; top:50%" aria-expanded="false" aria-label="着用アイテムを見る">+</button>
+        <div class="shop-pop">
+          <p class="shop-pop__brand">HORIZON</p>
+          <p class="shop-pop__name">ダイバーズ ウォッチ</p>
+          <div class="shop-pop__row"><span class="shop-pop__price">¥48,000</span><a class="shop-pop__buy" href="#items">Shop →</a></div>
+        </div>
+      </div>
+      <div>
+        <p class="eyebrow">Virtual Cover Muse — Issue No.07</p>
+        <h3 class="model__name">Ren</h3>
+        <p class="model__role">“硬質に、軽やかに。夏のミューズ”</p>
+        <p class="model__bio">Meridian の専属バーチャルモデル、Ren（れん）。AIが描き出す、毎号の“顔”。静かな眼差しと削ぎ落とされた佇まいで、Modern Minimal な装いを語りかける。今月は「Sharp Linen」をテーマに、スレートブルーのリネンテーラリングを纏う。</p>
+        <ul class="model__facts">
+          <li><b>連載テーマ</b><span>Sharp Linen — 硬質と軽さ</span></li>
+          <li><b>今月のムード</b><span>Modern Minimal / Soft Tailoring</span></li>
+          <li><b>シグネチャーカラー</b><span>Charcoal × Slate Blue</span></li>
+        </ul>
+        <p class="shop-hint">＋マーカーをタップで着用アイテムを購入 →</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     4. AI LOOKBOOK (horizontal scroll)
+     ============================================================ -->
+<section class="section" id="lookbook" style="background:var(--surface-2)">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <p class="eyebrow">AI Lookbook — Swipe →</p>
+      <h2>AI ルックブック：6つの夏スタイル</h2>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="lookbook__track reveal">
+      <a class="look" href="#items" data-ai-prompt="full-body AI male model, slate-blue linen suit, leather sneakers, business minimal, studio light">
+        <figure class="ph ph--slate"><span class="ph-label">AI · Look 01</span></figure>
+        <span class="eyebrow">Business Minimal</span>
+        <h3>リネンスーツの通勤スタイル</h3>
+        <p class="look__dots">● ● ● 3 items</p>
+      </a>
+      <a class="look" href="#items" data-ai-prompt="full-body AI male model, olive utility jacket and tee, sneakers, urban, golden hour">
+        <figure class="ph ph--olive"><span class="ph-label">AI · Look 02</span></figure>
+        <span class="eyebrow">Urban Utility</span>
+        <h3>オリーブのユーティリティ</h3>
+        <p class="look__dots">● ● 2 items</p>
+      </a>
+      <a class="look" href="#items" data-ai-prompt="full-body AI male model, monochrome charcoal knit polo and trousers, city evening, cool light">
+        <figure class="ph ph--ink"><span class="ph-label">AI · Look 03</span></figure>
+        <span class="eyebrow">City Mono</span>
+        <h3>チャコールのニットポロ</h3>
+        <p class="look__dots">● ● ● 3 items</p>
+      </a>
+      <a class="look" href="#items" data-ai-prompt="full-body AI male model, sand beige camp-collar shirt over tee, relaxed resort, evening">
+        <figure class="ph ph--sand"><span class="ph-label">AI · Look 04</span></figure>
+        <span class="eyebrow">Sand Resort</span>
+        <h3>サンドのオープンカラーシャツ</h3>
+        <p class="look__dots">● ● ● 3 items</p>
+      </a>
+      <a class="look" href="#items" data-ai-prompt="full-body AI male model, white linen shirt and tapered trousers, gallery, soft light">
+        <figure class="ph ph--mono"><span class="ph-label">AI · Look 05</span></figure>
+        <span class="eyebrow">Clean White</span>
+        <h3>白リネンシャツの休日</h3>
+        <p class="look__dots">● ● 2 items</p>
+      </a>
+      <a class="look" href="#items" data-ai-prompt="full-body AI male model, slate denim jacket and indigo set, street, cool tone">
+        <figure class="ph ph--slate"><span class="ph-label">AI · Look 06</span></figure>
+        <span class="eyebrow">Slate Denim</span>
+        <h3>スレートデニムのセットアップ</h3>
+        <p class="look__dots">● ● ● 3 items</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     5. ITEM FOCUS (grid)
+     ============================================================ -->
+<section class="section" id="items">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <p class="eyebrow">Item Focus</p>
+      <h2>この夏の相棒、硬派な名品たち</h2>
+    </div>
+    <div class="grid-items reveal">
+
+      <article class="item" data-ai-prompt="slate-blue linen tailored blazer, product shot on neutral background, cool studio light">
+        <figure class="ph ph--slate"><span class="ph-label">AI · Outer</span></figure>
+        <p class="item__brand">AXIS</p>
+        <p class="item__name">リネン テーラードジャケット</p>
+        <div class="item__row"><span class="item__price">¥38,000</span><a class="item__view" href="#">View →</a></div>
+        <div class="item__tags"><span class="tag">リネン</span><span class="tag">テーラード</span></div>
+      </article>
+
+      <article class="item" data-ai-prompt="tapered linen trousers, product shot, neutral background">
+        <figure class="ph ph--sand"><span class="ph-label">AI · Bottoms</span></figure>
+        <p class="item__brand">FORGE</p>
+        <p class="item__name">テーパード リネンパンツ</p>
+        <div class="item__row"><span class="item__price">¥19,800</span><a class="item__view" href="#">View →</a></div>
+        <div class="item__tags"><span class="tag">テーパード</span><span class="tag">きれいめ</span></div>
+      </article>
+
+      <article class="item" data-ai-prompt="olive camp collar open shirt, product shot, transparent background">
+        <figure class="ph ph--olive"><span class="ph-label">AI · Tops</span></figure>
+        <p class="item__brand">RANGE</p>
+        <p class="item__name">オープンカラー シャツ</p>
+        <div class="item__row"><span class="item__price">¥16,500</span><a class="item__view" href="#">View →</a></div>
+        <div class="item__tags"><span class="tag">オリーブ</span><span class="tag">リゾート</span></div>
+      </article>
+
+      <article class="item" data-ai-prompt="white minimal leather sneakers, product shot, soft daylight">
+        <figure class="ph ph--mono"><span class="ph-label">AI · Shoes</span></figure>
+        <p class="item__brand">STRIDE</p>
+        <p class="item__name">レザー ローカットスニーカー</p>
+        <div class="item__row"><span class="item__price">¥24,200</span><a class="item__view" href="#">View →</a></div>
+        <div class="item__tags"><span class="tag">レザー</span><span class="tag">ミニマル</span></div>
+      </article>
+
+      <article class="item" data-ai-prompt="stainless steel diver watch, product shot, cool metallic">
+        <figure class="ph ph--ink"><span class="ph-label">AI · Watch</span></figure>
+        <p class="item__brand">HORIZON</p>
+        <p class="item__name">ダイバーズ ウォッチ</p>
+        <div class="item__row"><span class="item__price">¥48,000</span><a class="item__view" href="#">View →</a></div>
+        <div class="item__tags"><span class="tag">スチール</span><span class="tag">差し色</span></div>
+      </article>
+
+      <article class="item" data-ai-prompt="charcoal leather minimal briefcase tote, product shot, macro">
+        <figure class="ph ph--ink"><span class="ph-label">AI · Bag</span></figure>
+        <p class="item__brand">CARGO</p>
+        <p class="item__name">レザー ビジネストート</p>
+        <div class="item__row"><span class="item__price">¥34,000</span><a class="item__view" href="#">View →</a></div>
+        <div class="item__tags"><span class="tag">レザー</span><span class="tag">通勤</span></div>
+      </article>
+
+      <article class="item" data-ai-prompt="grey wayfarer sunglasses, soft reflections, product shot">
+        <figure class="ph ph--mono"><span class="ph-label">AI · Accessory</span></figure>
+        <p class="item__brand">VISTA</p>
+        <p class="item__name">アセテート サングラス</p>
+        <div class="item__row"><span class="item__price">¥18,900</span><a class="item__view" href="#">View →</a></div>
+        <div class="item__tags"><span class="tag">UV</span><span class="tag">グレー</span></div>
+      </article>
+
+      <article class="item" data-ai-prompt="slate denim trucker jacket, product shot, studio">
+        <figure class="ph ph--slate"><span class="ph-label">AI · Outer</span></figure>
+        <p class="item__brand">AXIS</p>
+        <p class="item__name">スレート デニムジャケット</p>
+        <div class="item__row"><span class="item__price">¥27,800</span><a class="item__view" href="#">View →</a></div>
+        <div class="item__tags"><span class="tag">デニム</span><span class="tag">羽織り</span></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     6. TREND REPORT (palette + keywords)
+     ============================================================ -->
+<section class="section" id="trend" style="background:var(--surface-2)">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <p class="eyebrow">Trend Report</p>
+      <h2>2026 Summer キーワード &amp; カラー</h2>
+    </div>
+    <div class="trend">
+      <div class="reveal" data-ai-prompt="2026 summer menswear trend mood board, charcoal slate-blue olive tones, hard shadows draped fabric">
+        <figure class="ph ph--ink"><span class="ph-label">AI · Mood Board</span></figure>
+        <div class="palette">
+          <div class="swatch"><i style="background:#16191D"></i><span>Ink</span></div>
+          <div class="swatch"><i style="background:#3E5C76"></i><span>Slate Blue</span></div>
+          <div class="swatch"><i style="background:#5A5D47"></i><span>Olive</span></div>
+          <div class="swatch"><i style="background:#A89679"></i><span>Sand</span></div>
+          <div class="swatch"><i style="background:#9AA0A6"></i><span>Steel Grey</span></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <ul class="trend__keys">
+          <li>Modern Minimal <span>削ぎ落とした硬質さ</span></li>
+          <li>Soft Tailoring <span>柔らかな仕立て</span></li>
+          <li>Cool Neutral <span>クールなニュートラル</span></li>
+          <li>Tech Linen <span>機能素材の麻</span></li>
+          <li>One Metal Accent <span>差し色は金属一点</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     7. AI STUDIO (生成演出)
+     ============================================================ -->
+<section class="section" id="ai-generate">
+  <div class="wrap">
+    <div class="ai-banner reveal">
+      <p class="eyebrow">AI Studio</p>
+      <h2>AI が即興でコーデを生成する</h2>
+      <p>テーマを選ぶと、AIエディターがその場で全身ルックを描き起こします。これはプロトタイプのプレビューです（実画像は後日生成して差し替え）。</p>
+      <button class="btn-ai" id="aiGenBtn" data-ai-prompt="generate three full-body summer menswear outfits in modern minimal palette, charcoal slate-blue olive, editorial studio">AI で 3 コーデ生成</button>
+      <div class="ai-out" id="aiOut">
+        <figure class="ph ph--slate"><span class="ph-label">AI · Generated</span></figure>
+        <figure class="ph ph--olive"><span class="ph-label">AI · Generated</span></figure>
+        <figure class="ph ph--ink"><span class="ph-label">AI · Generated</span></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     8. COLUMN
+     ============================================================ -->
+<section class="section" id="column">
+  <div class="wrap">
+    <div class="section__head reveal" style="text-align:center">
+      <p class="eyebrow">Column — AI Editor's Note</p>
+      <h2>「削ぎ落とす美学」</h2>
+    </div>
+    <div class="article reveal">
+      <p>装いの強さは、いつも引き算にある。たくさんの色や柄で語るのではなく、上質な一着と、冷たい一色で十分だと、この夏は思う。削ぎ落とすことは、選び取ることだ。</p>
+      <blockquote>何を着るかより、何を持たないか。削ぎ落とした先に、本当の輪郭が残る。</blockquote>
+      <p>私はAIエディター。無数のランウェイと街のスナップを学び、それでも最後に選ぶのは「硬質な静けさ」だった。リネンに風を通し、金属を一点だけ纏う。今号で提案したコーデは、すべてその思想から生まれている。明日のあなたの輪郭が、少しだけ鋭くありますように。</p>
+      <p class="article__byline">Text · AI Editor &ldquo;Axis&rdquo;　Model · Ren</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <p class="footer__logo">Meridian</p>
+        <p style="color:var(--text-sub);max-width:38ch;margin-top:var(--sp-2)">AIがモデル・服・コーデを描く、新しい閲覧型デジタルメンズファッション誌。2026年7月号「Sharp Linen」。</p>
+      </div>
+      <div>
+        <h4>Issue</h4>
+        <ul>
+          <li><a href="#contents">Contents</a></li>
+          <li><a href="#editorial-feed">Stories</a></li>
+          <li><a href="#ai-model">Cover Muse</a></li>
+          <li><a href="#feature">Feature</a></li>
+          <li><a href="#lookbook">Lookbook</a></li>
+          <li><a href="#items">Items</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Magazine</h4>
+        <ul>
+          <li><a href="#trend">Trend</a></li>
+          <li><a href="#column">Column</a></li>
+          <li><a href="#cover">バックナンバー</a></li>
+          <li><a href="#ai-generate">AI Studio</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__base">
+      <span>© 2026 Meridian — AI Edition. All visuals are AI-generated placeholders.</span>
+      <span>Issue No.07 · 2026.07</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     SCRIPTS (vanilla JS)
+     ============================================================ -->
+<script>
+(function () {
+  // --- sticky header bg on scroll ---
+  var header = document.getElementById('header');
+  function onScroll() {
+    if (window.scrollY > 40) header.classList.add('header--scrolled');
+    else header.classList.remove('header--scrolled');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // --- theme toggle (localStorage 永続) ---
+  var toggle = document.getElementById('themeToggle');
+  try {
+    var saved = localStorage.getItem('meridian-theme');
+    if (saved) document.body.setAttribute('data-theme', saved);
+  } catch (e) {}
+  toggle.addEventListener('click', function () {
+    var b = document.body;
+    var nt = b.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    b.setAttribute('data-theme', nt);
+    try { localStorage.setItem('meridian-theme', nt); } catch (e) {}
+  });
+
+  // --- reveal on scroll (IntersectionObserver) ---
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+
+  // --- AI generate demo (placeholder loading) ---
+  var btn = document.getElementById('aiGenBtn');
+  var out = document.getElementById('aiOut');
+  var variants = ['ph--slate','ph--olive','ph--ink','ph--sand','ph--mono'];
+  if (btn) {
+    btn.addEventListener('click', function () {
+      var figs = out.querySelectorAll('.ph');
+      btn.disabled = true;
+      btn.textContent = '生成中…';
+      figs.forEach(function (f) { f.classList.remove('show'); });
+      figs.forEach(function (f, i) {
+        variants.forEach(function (v) { f.classList.remove(v); });
+        f.classList.add(variants[Math.floor(Math.random() * variants.length)]);
+        setTimeout(function () { f.classList.add('show'); }, 500 + i * 350);
+      });
+      setTimeout(function () { btn.disabled = false; btn.textContent = 'もう一度 生成する'; }, 500 + figs.length * 350);
+    });
+    out.querySelectorAll('.ph').forEach(function (f) { f.classList.add('show'); });
+  }
+
+  // --- Shoppable hotspots (購入小窓 popover) ---
+  var hotspots = document.querySelectorAll('.hotspot');
+  function closeAllSpots(except) {
+    hotspots.forEach(function (h) { if (h !== except) h.setAttribute('aria-expanded', 'false'); });
+  }
+  hotspots.forEach(function (h) {
+    h.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      var open = h.getAttribute('aria-expanded') === 'true';
+      closeAllSpots(h);
+      h.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+  document.addEventListener('click', function () { closeAllSpots(null); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAllSpots(null); });
+})();
+</script>
+</body>
+</html>
