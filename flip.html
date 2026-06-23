@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LUMIÈRE — スライド｜2026年7月号 Summer Glow</title>
+<style>
+/* ============================================================
+   DESIGN TOKENS — Quiet Luxury Editorial (index.html と共通)
+   ============================================================ */
+:root {
+  --bg:        #FAF8F5;
+  --surface:   #FFFFFF;
+  --surface-2: #F1EDE7;
+  --text:      #1C1A17;
+  --text-sub:  #6E665C;
+  --border:    #E4DED4;
+  --accent:    #A8745A;
+  --accent-soft:#D8B9A6;
+  --sub:       #7C8A77;
+
+  --font-serif: "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-sans:  system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif;
+
+  --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 40px; --sp-5: 64px; --sp-6: 96px;
+
+  --radius: 4px;
+  --radius-lg: 8px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+
+  /* shared static grain texture (index.html と同一の pre-baked 64×64 noise PNG, tiled).
+     全 .ph で共有 → 要素ごとのフィルタ合成が走らず軽い。外部依存ゼロ。 */
+  --grain: url("data:image/png;base64,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");
+}
+[data-theme="dark"] {
+  --bg:        #16140F;
+  --surface:   #211E18;
+  --surface-2: #1B1812;
+  --text:      #F3EFE8;
+  --text-sub:  #A89F92;
+  --border:    #332E26;
+  --accent:    #C68E72;
+  --accent-soft:#5A4738;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--surface-2) 60%, var(--bg)), var(--bg) 60%);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  transition: background .4s var(--ease), color .4s var(--ease);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+h1,h2,h3,.display { font-family: var(--font-serif); font-weight: 400; margin: 0; }
+.eyebrow {
+  font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--text-sub); margin: 0;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ============================================================
+   PHOTO PLACEHOLDER (.ph) — index.html と共通方式（軽量化）
+   grain は面積/不透明度を抑え、blend なしで軽く合成。
+   ============================================================ */
+.ph {
+  margin: 0;                     /* figure 既定の左右40pxマージンを打ち消す（bleedの版面ズレ防止） */
+  position: relative;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 80% at 70% 18%, rgba(255,255,255,.55), transparent 50%),
+    radial-gradient(140% 120% at 25% 85%, #b78a72 0%, #c8a48d 35%, transparent 70%),
+    linear-gradient(135deg, #d9c3b3 0%, #b69d8c 45%, #8c7461 100%);
+  color: #fff;
+}
+.ph::before {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  opacity:.07;
+  background-image: var(--grain);
+  background-repeat: repeat;
+  background-size: 160px 160px;
+}
+.ph::after {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background: linear-gradient(to top, rgba(20,16,12,.42), transparent 45%);
+}
+.ph-label {
+  position:absolute; left:12px; top:12px; z-index:2;
+  font:600 10px/1 var(--font-sans); letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.85); padding:5px 9px;
+  background:rgba(0,0,0,.32); border-radius:2px;
+}
+.ph--sage  { background:
+  radial-gradient(120% 80% at 70% 18%, rgba(255,255,255,.45), transparent 50%),
+  linear-gradient(135deg,#cdd2c2 0%,#9aa68f 50%,#6f7c66 100%); }
+.ph--mono  { background:
+  radial-gradient(120% 80% at 60% 20%, rgba(255,255,255,.5), transparent 50%),
+  linear-gradient(160deg,#e9e4dc 0%,#bcb4a8 55%,#7d756a 100%); }
+.ph--blush { background:
+  radial-gradient(120% 80% at 65% 22%, rgba(255,255,255,.5), transparent 50%),
+  linear-gradient(140deg,#f0dcd6 0%,#d9b2a8 50%,#b07f72 100%); }
+.ph--dusk  { background:
+  radial-gradient(120% 80% at 72% 16%, rgba(255,255,255,.4), transparent 50%),
+  linear-gradient(150deg,#c9bcc9 0%,#9a8aa0 50%,#5f5468 100%); }
+.ph--sand  { background:
+  radial-gradient(120% 80% at 68% 20%, rgba(255,255,255,.5), transparent 50%),
+  linear-gradient(135deg,#ece0cc 0%,#d6c39f 50%,#a98e63 100%); }
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px clamp(16px, 4vw, 40px);
+  pointer-events: none;
+}
+.topbar > * { pointer-events: auto; }
+.brand {
+  font-family: var(--font-serif); font-size: 19px; letter-spacing: .28em;
+  text-transform: uppercase; text-decoration: none; white-space: nowrap;
+}
+.topbar__right { display: flex; align-items: center; gap: 12px; }
+.toplink {
+  font-size: 12px; letter-spacing: .08em; color: var(--text-sub);
+  text-decoration: none; transition: color .3s var(--ease);
+}
+.toplink:hover { color: var(--accent); }
+.theme-toggle {
+  background: none; border: 1px solid var(--border); color: var(--text);
+  width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+  font-size: 14px; transition: border-color .3s var(--ease), transform .3s var(--ease);
+}
+.theme-toggle:hover { border-color: var(--accent); transform: rotate(20deg); }
+
+/* ============================================================
+   STAGE / DECK — 1画面 = 1スライド
+   ============================================================ */
+.stage {
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  padding: 64px clamp(40px, 7vw, 110px);
+}
+.deck {
+  position: relative;
+  /* 幅・高さの両方でクランプ → 16:9 を保ったまま画面内に必ず収める。
+     幅: コンテナ幅(94vw上限) と 高さ由来の上限 ((利用可能高) * 16/9) の小さい方。
+     高さ由来の上限がないと、狭い／正方形／縦長ビューポートで横にはみ出す。 */
+  width: min(100%, 1100px, calc((100svh - 150px) * 16 / 9));
+  aspect-ratio: 16 / 9;          /* パワポ標準の 16:9 スライド */
+  max-width: 94vw;
+  max-height: calc(100svh - 150px);
+  overflow: hidden;
+  border-radius: 6px;            /* full-bleed cover/back のクリップ用 */
+}
+
+/* 1枚のスライド（区切り = 薄い枠線 + 控えめな影 + 余白） */
+.slide {
+  position: absolute; inset: 0;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 18px 40px -26px rgba(40,30,20,.45);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  overflow: hidden;
+  transform: translateX(0);
+}
+.slide.is-active { opacity: 1; visibility: visible; pointer-events: auto; z-index: 2; }
+
+/* 横スライド・トランジション（transform/opacity のみ・軽量） ------ */
+/* slide-anim が付いた間だけ遷移。アイドル時は遷移ゼロ。 */
+.slide.slide-anim { transition: transform .38s var(--ease), opacity .38s var(--ease); will-change: transform; }
+/* 次へ：旧が左へ抜け、新が右から入る */
+.slide.slide-leaving.to-left  { transform: translateX(-103%); opacity: .35; z-index: 3; }
+.slide.enter-from-right       { transform: translateX(103%); }
+/* 前へ：旧が右へ抜け、新が左から入る */
+.slide.slide-leaving.to-right { transform: translateX(103%); opacity: .35; z-index: 3; }
+.slide.enter-from-left        { transform: translateX(-103%); }
+
+/* スライドの中身（パディング付きの版面） */
+.slide__inner {
+  position: relative;
+  width: 100%; height: 100%;
+  padding: clamp(18px, 4.2cqw, 44px);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  /* スライド寸法を基準にしたコンテナ → 中のテキストは cqw/cqh で常に同じ比率で収まる。
+     ビューポート差(vw)による崩れを排除。 */
+  container-type: size;
+  container-name: slide;
+  /* 自動フィットJSが過剰オーバーフロー時に下げるフォント倍率（既定 1）。
+     container-type:size のため cqw/cqh は inner の固定寸法のみに依存し、
+     --tscale を下げても寸法は変わらない → 測定→縮小の無限ループにならない。
+     transform ではなく font-size を縮めるので、grid/flex のレイアウトが
+     自然に再構成され、クリップや版面ズレが起きない。 */
+  --tscale: 1;
+}
+.slide__inner > * { max-width: 100%; }
+/* 2カラム構成スライド（ビジュアル + テキスト） */
+.slide__inner.cols {
+  display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(20px,3vw,40px);
+  align-items: stretch;
+}
+.col { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.col--vis { padding: 0; }   /* full-bleed visual column */
+
+/* full-bleed ビジュアルスライド（写真が版面いっぱい） */
+.slide--bleed .slide__inner { padding: 0; }
+.slide--bleed .ph { border-radius: 0; }
+.slide__cap {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+  padding: clamp(18px, 2.6vw, 34px); color: #fff;
+}
+.slide__cap .eyebrow { color: rgba(255,255,255,.82); }
+
+/* ビジュアルカラム内の写真は角丸 */
+.col--vis .ph { border-radius: 5px; }
+
+.folio {
+  margin-top: auto; padding-top: .9em;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: calc(clamp(8.5px, 1.35cqw, 10px) * var(--tscale, 1)); letter-spacing: .16em; text-transform: uppercase; color: var(--text-sub);
+}
+
+/* ============================================================
+   SLIDE CONTENT BLOCKS
+   ============================================================ */
+.kicker { color: var(--accent); }
+/* ----- タイポは container query 単位(cqw/cqh/cqmin)でスライド寸法に比例 -----
+   clamp() の下限/上限は px で可読性と暴走を担保。 */
+.eyebrow { font-size: calc(clamp(9px, 1.55cqw, 12px) * var(--tscale, 1)); }
+.lede {
+  font-family: var(--font-serif); font-size: calc(clamp(14px, 2.5cqw, 21px) * var(--tscale, 1));
+  font-style: italic; color: var(--text-sub); margin-top: .4em;
+  line-height: 1.4; overflow-wrap: anywhere;
+}
+.slide h1 { font-size: calc(clamp(24px, 5cqw, 48px) * var(--tscale, 1)); line-height: 1.1; letter-spacing: -.015em; margin-top: .25em; overflow-wrap: anywhere; }
+.slide h2 { font-size: calc(clamp(19px, 3.7cqw, 32px) * var(--tscale, 1)); line-height: 1.18; margin-top: .25em; overflow-wrap: anywhere; }
+.slide p.body { font-size: calc(clamp(12px, 2cqw, 16px) * var(--tscale, 1)); line-height: 1.7; color: var(--text); margin: .7em 0 0; overflow-wrap: anywhere; }
+.credit { margin-top: auto; font-size: calc(clamp(8.5px, 1.35cqw, 10px) * var(--tscale, 1)); letter-spacing: .1em; text-transform: uppercase; color: var(--text-sub); }
+
+/* cover */
+.cover { position:absolute; inset:0; display: grid; }
+.cover .ph { position: absolute; inset: 0; }
+.cover__copy { position: relative; z-index: 3; margin-top: auto; color: #fff; padding: clamp(26px,3.4vw,46px); max-width: 100%; overflow-wrap: anywhere; box-sizing: border-box; }
+.cover__copy .eyebrow { color: rgba(255,255,255,.8); }
+.cover .display { font-size: calc(clamp(40px, 11cqw, 92px) * var(--tscale, 1)); line-height: 1.02; letter-spacing: -.02em; margin-top: .12em; overflow-wrap: anywhere; }
+.cover__sub { font-family: var(--font-serif); font-style: italic; font-size: calc(clamp(15px, 3cqw, 24px) * var(--tscale, 1)); margin-top: .5em; color: rgba(255,255,255,.92); overflow-wrap: anywhere; }
+.cover__meta { display:flex; gap:clamp(10px,2cqw,18px); flex-wrap:wrap; margin-top:1em; font-size:calc(clamp(9px,1.55cqw,11px) * var(--tscale, 1)); letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.72); }
+.ai-edition {
+  display:inline-block; font-size:calc(clamp(8.5px,1.4cqw,10px) * var(--tscale, 1)); letter-spacing:.3em; font-weight:600;
+  padding:5px 12px; border:1px solid rgba(255,255,255,.55); border-radius:2px;
+  text-transform:uppercase; color:#fff;
+}
+
+/* contents (TOC) */
+.toc { display:flex; flex-direction:column; gap:2px; margin-top:1em; }
+.toc__row { display:grid; grid-template-columns:auto 1fr auto; gap:clamp(8px,1.6cqw,14px); align-items:baseline;
+  padding:clamp(6px,1.1cqh,9px) 0; border-top:1px solid var(--border); }
+.toc__no { font-family:var(--font-serif); font-size:calc(clamp(11px,1.8cqw,13px) * var(--tscale, 1)); color:var(--text-sub); }
+.toc__t { font-family:var(--font-serif); font-size:calc(clamp(13px,2.3cqw,19px) * var(--tscale, 1)); overflow-wrap:anywhere; }
+.toc__c { font-size:calc(clamp(8.5px,1.4cqw,10px) * var(--tscale, 1)); letter-spacing:.1em; text-transform:uppercase; color:var(--text-sub); white-space:nowrap; }
+
+/* model facts */
+.facts { list-style:none; padding:0; margin:1em 0 0; }
+.facts li { padding:clamp(6px,1.1cqh,9px) 0; border-top:1px solid var(--border); display:flex; justify-content:space-between; gap:clamp(8px,1.6cqw,14px); font-size:calc(clamp(11px,1.85cqw,13px) * var(--tscale, 1)); }
+.facts li b { font-weight:600; }
+.facts li span { color:var(--text-sub); text-align:right; overflow-wrap:anywhere; }
+
+/* item list */
+.item-list { display:flex; flex-direction:column; gap:clamp(8px,1.5cqh,12px); margin-top:1em; }
+.item-row { display:grid; grid-template-columns:1fr auto; gap:4px clamp(8px,1.6cqw,14px); align-items:baseline;
+  padding-bottom:clamp(7px,1.3cqh,11px); border-bottom:1px solid var(--border); }
+.item-row .brand { font-size:calc(clamp(9px,1.6cqw,11px) * var(--tscale, 1)); letter-spacing:.06em; text-transform:uppercase; color:var(--text-sub); grid-column:1/-1; }
+.item-row .name { font-family:var(--font-serif); font-size:calc(clamp(13px,2.3cqw,19px) * var(--tscale, 1)); overflow-wrap:anywhere; }
+.item-row .price { color:var(--accent); font-weight:600; font-size:calc(clamp(12px,2cqw,14px) * var(--tscale, 1)); white-space:nowrap; }
+.item-row .tags { grid-column:1/-1; display:flex; gap:6px; flex-wrap:wrap; }
+.tag { font-size:calc(clamp(8.5px,1.4cqw,10px) * var(--tscale, 1)); letter-spacing:.04em; color:var(--text-sub); background:var(--surface-2); padding:3px 8px; border-radius:999px; }
+
+/* item / generated grid */
+.mini-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; flex:1; min-height:0; }
+.mini { position:relative; border-radius:var(--radius); overflow:hidden; min-height:0; }
+
+/* palette */
+.palette { display:flex; gap:clamp(8px,1.8cqw,12px); margin-top:1em; flex-wrap:wrap; }
+.swatch { text-align:left; }
+.swatch i { display:block; width:clamp(34px,7cqw,48px); height:clamp(34px,7cqw,48px); border-radius:var(--radius); border:1px solid var(--border); }
+.swatch span { font-size:calc(clamp(8.5px,1.4cqw,10px) * var(--tscale, 1)); letter-spacing:.04em; color:var(--text-sub); margin-top:6px; display:block; }
+.keys { list-style:none; padding:0; margin:1em 0 0; }
+.keys li { padding:clamp(6px,1.1cqh,8px) 0; border-top:1px solid var(--border); display:flex; justify-content:space-between; gap:clamp(8px,1.6cqw,14px); font-size:calc(clamp(12px,2cqw,14px) * var(--tscale, 1)); }
+.keys li span { color:var(--text-sub); font-size:calc(clamp(10px,1.7cqw,12px) * var(--tscale, 1)); }
+
+/* column / article */
+.article { margin-top:.8em; min-height:0; }
+.article p { font-size:calc(clamp(12px,2cqw,15px) * var(--tscale, 1)); line-height:1.75; margin:.65em 0; overflow-wrap:anywhere; }
+.article > p:first-of-type::first-letter {
+  font-family:var(--font-serif); font-size:3.2em; line-height:.8;
+  float:left; margin:6px 10px 0 0; color:var(--accent);
+}
+.article blockquote {
+  font-family:var(--font-serif); font-style:italic; font-size:calc(clamp(15px,2.7cqw,22px) * var(--tscale, 1));
+  border-left:2px solid var(--accent); padding-left:14px; color:var(--text); margin:1em 0; overflow-wrap:anywhere;
+}
+
+/* back cover */
+.back { position:absolute; inset:0; display:grid; }
+.back .ph { position:absolute; inset:0; }
+.back__copy { position:relative; z-index:3; margin:auto; text-align:center; color:#fff; padding:24px; max-width:100%; overflow-wrap:anywhere; box-sizing:border-box; }
+.back__copy .brand-big { font-family:var(--font-serif); font-size:calc(clamp(30px,8cqw,58px) * var(--tscale, 1)); letter-spacing:.18em; text-transform:uppercase; overflow-wrap:anywhere; }
+.back__copy p { font-size:calc(clamp(10px,1.9cqw,12px) * var(--tscale, 1)); letter-spacing:.1em; color:rgba(255,255,255,.85); margin-top:1em; line-height:1.9; overflow-wrap:anywhere; }
+
+/* ============================================================
+   NAV ARROWS + PROGRESS
+   ============================================================ */
+.nav-arrow {
+  position: fixed; top: 50%; transform: translateY(-50%); z-index: 55;
+  width: clamp(40px, 5vw, 56px); height: clamp(40px, 5vw, 56px);
+  border-radius: 50%; border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text); font-size: 22px; line-height: 1; cursor: pointer;
+  display: grid; place-items: center;
+  transition: border-color .3s var(--ease), transform .3s var(--ease), opacity .3s var(--ease);
+}
+.nav-arrow:hover { border-color: var(--accent); }
+.nav-arrow:active { transform: translateY(-50%) scale(.94); }
+.nav-arrow[disabled] { opacity: .28; cursor: default; pointer-events: none; }
+.nav-arrow--prev { left: clamp(8px, 2vw, 26px); }
+.nav-arrow--next { right: clamp(8px, 2vw, 26px); }
+
+.progress {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 55;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  pointer-events: none;
+}
+.progress__num { font-family: var(--font-serif); font-size: 13px; letter-spacing: .2em; color: var(--text-sub); }
+.progress__num b { color: var(--text); font-weight: 400; }
+.dots { display: flex; gap: 7px; pointer-events: auto; }
+.dot {
+  width: 7px; height: 7px; border-radius: 50%; border: none; padding: 0; cursor: pointer;
+  background: var(--border); transition: background .3s var(--ease), transform .3s var(--ease);
+}
+.dot:hover { transform: scale(1.3); }
+.dot.is-on { background: var(--accent); transform: scale(1.25); }
+
+.hint {
+  position: fixed; left: 50%; bottom: 54px; transform: translateX(-50%); z-index: 54;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-sub);
+  opacity: .9; transition: opacity .6s var(--ease); pointer-events: none; text-align:center;
+}
+.hint.gone { opacity: 0; }
+
+/* tap zones (PCの左右クリック送り) */
+.tapzone { position: fixed; top: 70px; bottom: 70px; width: 32%; z-index: 40; cursor: pointer; background: transparent; border: none; padding: 0; -webkit-tap-highlight-color: transparent; }
+.tapzone--prev { left: 0; }
+.tapzone--next { right: 0; }
+
+/* ============================================================
+   RESPONSIVE — 狭い画面でスライドを縦長に収める
+   ============================================================ */
+@media (max-width: 760px) {
+  .stage { padding: 60px 14px 70px; }
+  /* モバイルは 3:4 縦長。幅も高さ由来 ((利用可能高) * 3/4) で頭打ちにして必ず収める。 */
+  .deck {
+    aspect-ratio: 3 / 4;
+    width: min(94vw, calc((100svh - 130px) * 3 / 4));
+    max-width: 94vw;
+    max-height: calc(100svh - 130px);
+  }
+  /* モバイルは 2カラムを縦積みにして 1枚に収める。
+     ビジュアル行を控えめにし、テキスト側に余裕を持たせる。 */
+  .slide__inner.cols { grid-template-columns: 1fr; grid-template-rows: minmax(110px,34%) 1fr; gap: 12px; }
+  .nav-arrow { display: none; }
+
+  /* 縦長は cqw が狭くなり過ぎるので cqmin 寄りに底上げして可読性を確保 */
+  .slide h1 { font-size: calc(clamp(22px, 6.4cqw, 40px) * var(--tscale, 1)); }
+  .slide h2 { font-size: calc(clamp(18px, 5cqw, 28px) * var(--tscale, 1)); }
+  .slide p.body { font-size: calc(clamp(12px, 3cqw, 15px) * var(--tscale, 1)); }
+
+  /* 密度の高いスライドはモバイルで二次情報を間引いて窮屈さを回避
+     （趣旨は保持：タグやfolio等の装飾のみ削減）。 */
+  .item-row .tags { display: none; }
+  .item-list { gap: clamp(7px, 1.6cqh, 11px); }
+  .toc__c { display: none; }
+  .toc__row { grid-template-columns: auto 1fr; }
+}
+@media (max-width: 460px) {
+  .topbar .toplink { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slide.slide-anim { transition-duration: 1ms !important; }
+}
+</style>
+</head>
+<body data-theme="light">
+
+<!-- ===================== TOP BAR ===================== -->
+<div class="topbar">
+  <a href="#" class="brand">Lumière</a>
+  <div class="topbar__right">
+    <a class="toplink" href="index.html">縦スクロール版へ →</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="テーマ切替">◑</button>
+  </div>
+</div>
+
+<!-- ===================== STAGE ===================== -->
+<div class="stage">
+  <div class="deck" id="deck">
+    <!-- slides are injected by JS -->
+  </div>
+</div>
+
+<!-- tap zones -->
+<button class="tapzone tapzone--prev" id="tapPrev" aria-label="前のスライド"></button>
+<button class="tapzone tapzone--next" id="tapNext" aria-label="次のスライド"></button>
+
+<!-- arrows -->
+<button class="nav-arrow nav-arrow--prev" id="btnPrev" aria-label="前のスライド">‹</button>
+<button class="nav-arrow nav-arrow--next" id="btnNext" aria-label="次のスライド">›</button>
+
+<!-- progress -->
+<div class="hint" id="hint">クリック / ← → / スワイプ で送る</div>
+<div class="progress">
+  <div class="progress__num"><b id="pgCur">01</b> / <span id="pgTot">12</span></div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ============================================================
+     スライドデータ（index.html の世界観・命名・コンテンツを踏襲）
+     各エントリ = 1スライド（フル1枚）。html は版面の中身。
+     ============================================================ */
+  function folio(n) {
+    return '<div class="folio"><span>Lumière · No.07</span><span>P.' + n + '</span></div>';
+  }
+  function bleed(cls, prompt, labelTxt, cap) {
+    return '<figure class="ph ' + cls + '" data-ai-prompt="' + prompt + '">'
+      + '<span class="ph-label">' + labelTxt + '</span>'
+      + (cap || '') + '</figure>';
+  }
+
+  var slides = [
+
+    /* 1. COVER — フルブリードの表紙ビジュアル + コピー */
+    {
+      cls: 'slide--bleed',
+      html:
+        '<div class="cover">' +
+          bleed('ph--blush', 'cinematic full-body Japanese female fashion model in airy white summer linen layers, soft golden backlight, minimal editorial cover, sun glow, Vogue Japan style, shot on film', 'AI · Cover Story') +
+          '<div class="cover__copy">' +
+            '<span class="ai-edition">AI Edition</span>' +
+            '<p class="eyebrow" style="margin-top:12px">Lumière · 2026年7月号 — Issue No.07</p>' +
+            '<h1 class="display">Summer<br>Glow</h1>' +
+            '<p class="cover__sub">光をまとう、夏のミニマル。</p>' +
+            '<div class="cover__meta"><span>Cover — Aoi</span><span>Styling — AI Editor</span><span>Terracotta</span></div>' +
+          '</div>' +
+        '</div>'
+    },
+
+    /* 2. CONTENTS — 目次（テキスト1枚） */
+    {
+      html:
+        '<p class="eyebrow kicker">In This Issue</p>' +
+        '<h1>目次 — Contents</h1>' +
+        '<div class="toc">' +
+          '<div class="toc__row"><span class="toc__no">P.012</span><span class="toc__t">白で魅せる、夏のレイヤード</span><span class="toc__c">Editorial</span></div>' +
+          '<div class="toc__row"><span class="toc__no">P.020</span><span class="toc__t">専属AIモデル Aoi</span><span class="toc__c">Muse</span></div>' +
+          '<div class="toc__row"><span class="toc__no">P.028</span><span class="toc__t">AI ルックブック：夏コーデ</span><span class="toc__c">Lookbook</span></div>' +
+          '<div class="toc__row"><span class="toc__no">P.046</span><span class="toc__t">この夏の主役、軽やかな名品たち</span><span class="toc__c">Item Focus</span></div>' +
+          '<div class="toc__row"><span class="toc__no">P.060</span><span class="toc__t">2026 Summer キーワード &amp; カラー</span><span class="toc__c">Trend</span></div>' +
+          '<div class="toc__row"><span class="toc__no">P.084</span><span class="toc__t">「静けさの装い」</span><span class="toc__c">Column</span></div>' +
+        '</div>' +
+        folio('002')
+    },
+
+    /* 3. EDITORIAL 特集 — 左ビジュアル / 右本文 */
+    {
+      cls: 'cols',
+      html:
+        '<div class="col col--vis">' +
+          bleed('ph--mono', 'editorial fashion photo, model in oversized white linen shirt and beige wide pants, standing by a sunlit linen curtain, soft shadows, minimalist, 4x5 film', 'AI · Editorial',
+            '<div class="slide__cap"><p class="eyebrow">Feature</p></div>') +
+        '</div>' +
+        '<div class="col">' +
+          '<p class="eyebrow kicker">Feature — Editorial</p>' +
+          '<h1>白で魅せる、<br>夏のレイヤード</h1>' +
+          '<p class="lede">ニュアンスカラーで作る、抜け感のコーデ。</p>' +
+          '<p class="body">今季の主役は、何も足さない「白」。ただしのっぺりとは見せない。リネン、コットンボイル、シアー素材を重ねて、肌に風を通すような軽さを纏う。アクセントは肌になじむテラコッタを一点だけ。引き算の美学が、夏のあなたを静かに際立たせる。</p>' +
+          '<div class="credit">Photo · AI　Styling · AI Editor　Model · Aoi</div>' +
+          folio('012') +
+        '</div>'
+    },
+
+    /* 4. EDITORIAL ディテール — 2点のルック写真を1枚に */
+    {
+      cls: 'cols',
+      html:
+        '<div class="col col--vis">' +
+          bleed('ph--blush', 'close up of sheer white blouse detail, sunlight through fabric, soft film grain', 'AI · Detail',
+            '<div class="slide__cap"><p class="eyebrow">Sheer Layering</p></div>') +
+        '</div>' +
+        '<div class="col col--vis">' +
+          bleed('ph--sand', 'beige wide linen pants walking shot, motion blur, summer street, editorial', 'AI · Motion',
+            '<div class="slide__cap"><p class="eyebrow">Soft Tailoring</p></div>') +
+        '</div>'
+    },
+
+    /* 5. 専属AIモデル Aoi — 左ビジュアル / 右プロフィール */
+    {
+      cls: 'cols',
+      html:
+        '<div class="col col--vis">' +
+          bleed('ph--blush', 'full-body portrait of Aoi, signature virtual AI fashion model, Japanese features, white sheer linen blouse, beige wide pants, woven straw bag, terracotta sandals, soft golden editorial light, recurring cover muse', 'AI · Muse Aoi') +
+        '</div>' +
+        '<div class="col">' +
+          '<p class="eyebrow kicker">This Month’s Muse — No.07</p>' +
+          '<h1>Aoi</h1>' +
+          '<p class="lede">“光をまとう、夏のミューズ”</p>' +
+          '<p class="body">Lumière の専属バーチャルモデル、Aoi（あおい）。AIが描き出す、毎号の“顔”。穏やかな佇まいと余白のある表情で、Quiet Luxury な装いを静かに語りかける。今月は「Summer Glow」をテーマに、白とテラコッタのレイヤードを纏う。</p>' +
+          '<ul class="facts">' +
+            '<li><b>連載テーマ</b><span>Summer Glow — 光と余白</span></li>' +
+            '<li><b>今月のムード</b><span>Quiet Luxury / Sheer Layering</span></li>' +
+            '<li><b>シグネチャー</b><span>Off White × Terracotta</span></li>' +
+          '</ul>' +
+          folio('020') +
+        '</div>'
+    },
+
+    /* 6. AI ルックブック 1 — 2ルックを1枚に */
+    {
+      cls: 'cols',
+      html:
+        '<div class="col col--vis">' +
+          bleed('ph--mono', 'full-body AI model, white blouse, beige wide pants, office minimal, studio light', 'AI · Look 01',
+            '<div class="slide__cap"><p class="eyebrow">Office Minimal</p><h2 style="color:#fff">白シャツの通勤コーデ</h2></div>') +
+        '</div>' +
+        '<div class="col col--vis">' +
+          bleed('ph--sage', 'full-body AI model, sage green slip dress, sandals, resort, golden hour', 'AI · Look 02',
+            '<div class="slide__cap"><p class="eyebrow">Resort Sage</p><h2 style="color:#fff">セージのリゾートワンピ</h2></div>') +
+        '</div>'
+    },
+
+    /* 7. AI ルックブック 2 — 2ルックを1枚に */
+    {
+      cls: 'cols',
+      html:
+        '<div class="col col--vis">' +
+          bleed('ph--blush', 'full-body AI model, blush pink set up, city date, soft light', 'AI · Look 03',
+            '<div class="slide__cap"><p class="eyebrow">City Date</p><h2 style="color:#fff">くすみピンクのセットアップ</h2></div>') +
+        '</div>' +
+        '<div class="col col--vis">' +
+          bleed('ph--dusk', 'full-body AI model, dusk lavender slip dress, twilight street', 'AI · Look 05',
+            '<div class="slide__cap"><p class="eyebrow">Dusk Mood</p><h2 style="color:#fff">ラベンダーのスリップドレス</h2></div>') +
+        '</div>'
+    },
+
+    /* 8. アイテム特集 — 左写真グリッド / 右リスト */
+    {
+      cls: 'cols',
+      html:
+        '<div class="col">' +
+          '<p class="eyebrow kicker">Item Focus</p>' +
+          '<h2>軽やかな名品たち</h2>' +
+          '<div class="mini-grid">' +
+            '<figure class="ph ph--mono mini" data-ai-prompt="oversized white linen shirt product shot soft studio light"><span class="ph-label">AI · Tops</span></figure>' +
+            '<figure class="ph ph--sand mini" data-ai-prompt="beige wide linen pants product shot neutral background"><span class="ph-label">AI · Bottoms</span></figure>' +
+            '<figure class="ph ph--blush mini" data-ai-prompt="woven straw tote bag product shot soft daylight"><span class="ph-label">AI · Bag</span></figure>' +
+            '<figure class="ph ph--sand mini" data-ai-prompt="terracotta leather flat sandals product shot minimal"><span class="ph-label">AI · Shoes</span></figure>' +
+          '</div>' +
+          folio('046') +
+        '</div>' +
+        '<div class="col">' +
+          '<p class="eyebrow kicker">The Edit</p>' +
+          '<h2 style="margin-bottom:4px">この夏の主役</h2>' +
+          '<div class="item-list">' +
+            '<div class="item-row"><span class="brand">LUMI</span><span class="name">オーバーサイズ リネンシャツ</span><span class="price">¥12,800</span><span class="tags"><span class="tag">リネン</span><span class="tag">オーバーサイズ</span></span></div>' +
+            '<div class="item-row"><span class="brand">ÉCRU</span><span class="name">ワイド リネンパンツ</span><span class="price">¥14,300</span><span class="tags"><span class="tag">ベージュ</span><span class="tag">きれいめ</span></span></div>' +
+            '<div class="item-row"><span class="brand">VERT</span><span class="name">セージ スリップワンピース</span><span class="price">¥18,900</span><span class="tags"><span class="tag">リゾート</span><span class="tag">ニュアンス</span></span></div>' +
+            '<div class="item-row"><span class="brand">MAREA</span><span class="name">かごトート バッグ</span><span class="price">¥9,800</span><span class="tags"><span class="tag">かご</span><span class="tag">夏小物</span></span></div>' +
+          '</div>' +
+          folio('047') +
+        '</div>'
+    },
+
+    /* 9. トレンド / カラー — 左ムードボード / 右キーワード&パレット */
+    {
+      cls: 'cols',
+      html:
+        '<div class="col col--vis">' +
+          bleed('ph--sand', '2026 summer trend mood board, terracotta sage off-white draped fabrics, sunlight shadows, editorial color study', 'AI · Mood Board',
+            '<div class="slide__cap"><p class="eyebrow">Trend Report</p></div>') +
+        '</div>' +
+        '<div class="col">' +
+          '<p class="eyebrow kicker">Trend Report</p>' +
+          '<h1>2026 Summer<br>キーワード</h1>' +
+          '<div class="palette">' +
+            '<div class="swatch"><i style="background:#FAF8F5"></i><span>Off White</span></div>' +
+            '<div class="swatch"><i style="background:#D8B9A6"></i><span>Blush</span></div>' +
+            '<div class="swatch"><i style="background:#A8745A"></i><span>Terracotta</span></div>' +
+            '<div class="swatch"><i style="background:#7C8A77"></i><span>Sage</span></div>' +
+            '<div class="swatch"><i style="background:#9A8AA0"></i><span>Dusk</span></div>' +
+          '</div>' +
+          '<ul class="keys">' +
+            '<li>Quiet Luxury <span>静かな上質さ</span></li>' +
+            '<li>Sheer Layering <span>透ける重ね着</span></li>' +
+            '<li>Earthy Neutral <span>大地のニュートラル</span></li>' +
+            '<li>One Accent Color <span>差し色は一点だけ</span></li>' +
+          '</ul>' +
+          folio('060') +
+        '</div>'
+    },
+
+    /* 10. コラム — 左本文 / 右ポートレート */
+    {
+      cls: 'cols',
+      html:
+        '<div class="col">' +
+          '<p class="eyebrow kicker">Column — AI Editor’s Note</p>' +
+          '<h1>「静けさの装い」</h1>' +
+          '<div class="article">' +
+            '<p>装いの主役は、いつも余白にある。たくさんの色や柄で語るのではなく、上質な一枚と、肌になじむ一色で十分だと、この夏は思う。引き算は、勇気だ。</p>' +
+            '<blockquote>何を着るかより、何を脱ぐか。引き算の先に、本当のあなたが残る。</blockquote>' +
+            '<p>私はAIエディター。無数のランウェイと街のスナップを学び、それでも最後に選ぶのは「静けさ」だった。光をまとうように、白いリネンに風を通す。</p>' +
+          '</div>' +
+          '<div class="credit">Text · AI Editor “Lumi”　Model · Aoi</div>' +
+          folio('084') +
+        '</div>' +
+        '<div class="col col--vis">' +
+          bleed('ph--mono', 'quiet luxury portrait, model in soft natural window light, contemplative editorial close-up, muted neutral palette', 'AI · Portrait') +
+        '</div>'
+    },
+
+    /* 11. AI Studio — 左説明 / 右生成グリッド */
+    {
+      cls: 'cols',
+      html:
+        '<div class="col">' +
+          '<p class="eyebrow kicker">AI Studio</p>' +
+          '<h1>AIが即興で<br>コーデを描く</h1>' +
+          '<p class="body">テーマを選ぶと、AIエディターがその場で全身ルックを描き起こす——本誌のすべてのビジュアルは、後日この仕組みで実画像に差し替え可能なプレースホルダーです。各図版の <code>data-ai-prompt</code> が、その指示書。</p>' +
+          '<div class="credit">Prototype Preview — Visuals are AI placeholders</div>' +
+          folio('072') +
+        '</div>' +
+        '<div class="col">' +
+          '<div class="mini-grid" style="grid-template-rows:1fr 1fr; height:100%; margin-top:0">' +
+            '<figure class="ph ph--blush mini" data-ai-prompt="generated full-body summer outfit, off-white quiet luxury, editorial studio"><span class="ph-label">AI · Generated</span></figure>' +
+            '<figure class="ph ph--sage mini" data-ai-prompt="generated full-body summer outfit, sage resort, editorial studio"><span class="ph-label">AI · Generated</span></figure>' +
+            '<figure class="ph ph--dusk mini" data-ai-prompt="generated full-body summer outfit, dusk lavender, editorial studio"><span class="ph-label">AI · Generated</span></figure>' +
+            '<figure class="ph ph--sand mini" data-ai-prompt="generated full-body summer outfit, sand neutral, editorial studio"><span class="ph-label">AI · Generated</span></figure>' +
+          '</div>' +
+        '</div>'
+    },
+
+    /* 12. BACK COVER — フルブリード */
+    {
+      cls: 'slide--bleed',
+      html:
+        '<div class="back">' +
+          bleed('ph--dusk', 'back cover, soft twilight gradient, minimal editorial, brand mark, quiet luxury, film grain', 'AI · Back Cover') +
+          '<div class="back__copy">' +
+            '<div class="brand-big">Lumière</div>' +
+            '<p>AI Edition<br>2026年7月号 — Summer Glow<br>Next Issue · No.08 「Autumn Light」</p>' +
+            '<p style="margin-top:8px"><a href="index.html" style="color:#fff;text-decoration:underline">縦スクロール版で全記事を読む →</a></p>' +
+          '</div>' +
+        '</div>'
+    }
+
+  ];
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
+  var deck = document.getElementById('deck');
+  var TOTAL = slides.length;
+  var cur = 0;
+  var animating = false;
+
+  var slideEls = slides.map(function (s, i) {
+    var el = document.createElement('section');
+    el.className = 'slide' + (s.cls && s.cls.indexOf('slide--') === 0 ? ' ' + s.cls : '');
+    el.dataset.index = i;
+    var innerCls = 'slide__inner' + (s.cls === 'cols' ? ' cols' : '');
+    el.innerHTML = '<div class="' + innerCls + '">' + s.html + '</div>';
+    deck.appendChild(el);
+    return el;
+  });
+
+  /* dots */
+  var dotsWrap = document.getElementById('dots');
+  var dots = slides.map(function (s, i) {
+    var d = document.createElement('button');
+    d.className = 'dot';
+    d.setAttribute('aria-label', 'スライド ' + (i + 1) + ' へ');
+    d.addEventListener('click', function () { goTo(i); });
+    dotsWrap.appendChild(d);
+    return d;
+  });
+
+  var pgCur = document.getElementById('pgCur');
+  var pgTot = document.getElementById('pgTot');
+  pgTot.textContent = pad(TOTAL);
+  var btnPrev = document.getElementById('btnPrev');
+  var btnNext = document.getElementById('btnNext');
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function render() {
+    slideEls.forEach(function (el, i) { el.classList.toggle('is-active', i === cur); });
+    dots.forEach(function (d, i) { d.classList.toggle('is-on', i === cur); });
+    pgCur.textContent = pad(cur + 1);
+    btnPrev.disabled = (cur === 0);
+    btnNext.disabled = (cur === TOTAL - 1);
+    fitCurrent();
+  }
+
+  /* ============================================================
+     AUTO-FIT — cq タイポで吸収しきれず枠を超えた場合の保険。
+     コンテンツ枠(.slide__inner)の実寸が版面を超えたら scale を僅かに下げ、
+     収束したら止める。常時再描画なし。リサイズ/表示時に再計算。
+     ============================================================ */
+  // inner とその overflow:hidden 子の最大はみ出し比（>1 で溢れ）を返す。
+  function overflowRatio(inner) {
+    var aW = inner.clientWidth, aH = inner.clientHeight;
+    if (aW <= 0 || aH <= 0) return 1;
+    var over = Math.max(inner.scrollWidth / aW, inner.scrollHeight / aH);
+    // .col / .article 等は overflow:hidden で内部の溢れを隠すため個別に確認。
+    var clipped = inner.querySelectorAll('.col, .article, .item-list, .toc, .cover__copy, .back__copy');
+    for (var i = 0; i < clipped.length; i++) {
+      var c = clipped[i];
+      if (c.clientHeight > 0) over = Math.max(over, c.scrollHeight / c.clientHeight);
+      if (c.clientWidth  > 0) over = Math.max(over, c.scrollWidth  / c.clientWidth);
+    }
+    return over;
+  }
+
+  var MIN_TSCALE = 0.62;   // 過剰縮小ガード（下限）
+
+  function fitInner(inner) {
+    if (!inner) return;
+    // リセットして自然寸法を測る
+    var scale = 1;
+    inner.style.setProperty('--tscale', '1');
+    if (inner.clientWidth <= 0 || inner.clientHeight <= 0) return;  // 非表示なら後で
+    // font-size 縮小は折り返しが変わるため線形でない → 数回反復して収束させる。
+    // 収束したら即終了（常時再描画なし）。
+    for (var pass = 0; pass < 6; pass++) {
+      var over = overflowRatio(inner);
+      if (over <= 1.012) break;            // 収まった
+      scale = scale / over * 0.995;        // 少し余裕を持って縮める
+      if (scale < MIN_TSCALE) { scale = MIN_TSCALE; inner.style.setProperty('--tscale', scale.toFixed(4)); break; }
+      inner.style.setProperty('--tscale', scale.toFixed(4));
+    }
+  }
+
+  function fitCurrent() {
+    var el = slideEls[cur];
+    if (!el) return;
+    var inner = el.querySelector('.slide__inner');
+    // レイアウト確定後に測る（cq/フォント反映を待つ）
+    requestAnimationFrame(function () { fitInner(inner); });
+  }
+
+  /* ============================================================
+     SLIDE — 横スライドのページ送り（transform + transition のみ）
+     旧スライドが横に抜け、新スライドが反対側から入る。要素複製なし。
+     ============================================================ */
+  var slideTimer = null;     // transitionend フォールバック用タイマー
+  var slideEnd = null;       // 進行中スライドの後始末（冪等）
+
+  function flipTo(target, dir) {
+    // オーバーラップ防止ガード：遷移中の追加入力は無視
+    if (animating || target < 0 || target >= TOTAL || target === cur) return;
+
+    // 前回の遷移が残っていれば即時に確定・掃除
+    if (slideEnd) slideEnd();
+
+    animating = true;
+    hideHint();
+
+    var fromEl = slideEls[cur];
+    var toEl = slideEls[target];
+    var next = (dir === 'next');
+
+    // 新スライドを反対側にオフセット → アクティブ化
+    toEl.classList.add('slide-anim', next ? 'enter-from-right' : 'enter-from-left');
+    toEl.classList.add('is-active');
+    // 旧スライドは抜けて行く方向へ
+    fromEl.classList.add('slide-anim', 'slide-leaving', next ? 'to-left' : 'to-right');
+
+    // 強制リフロー後にトランジション起動（オフセット → 0）
+    void deck.offsetWidth;
+    toEl.classList.remove('enter-from-right', 'enter-from-left');
+
+    var dur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 10 : 380;
+
+    var done = false;
+    function finish() {
+      if (done) return;
+      done = true;
+      if (slideTimer) { clearTimeout(slideTimer); slideTimer = null; }
+      toEl.removeEventListener('transitionend', onEnd);
+      slideEnd = null;
+      try {
+        cur = target;
+        render();
+      } finally {
+        // 遷移用クラス・will-change を全スライドから掃除（アイドル時は遷移ゼロ）
+        slideEls.forEach(function (el) {
+          el.classList.remove('slide-anim', 'slide-leaving', 'to-left', 'to-right',
+                              'enter-from-right', 'enter-from-left');
+        });
+        animating = false;
+      }
+    }
+    // 主経路：新スライドの transform 遷移完了を検知
+    function onEnd(e) {
+      if (e.target === toEl && e.propertyName === 'transform') finish();
+    }
+    toEl.addEventListener('transitionend', onEnd);
+    slideEnd = finish;
+    // フォールバック：transitionend 不発の環境向けに時間後に強制完了
+    slideTimer = setTimeout(finish, dur + 90);
+  }
+
+  function next() { flipTo(cur + 1, 'next'); }
+  function prev() { flipTo(cur - 1, 'prev'); }
+  function goTo(i) {
+    if (i === cur || animating) return;
+    flipTo(i, i > cur ? 'next' : 'prev');
+  }
+
+  /* ============================================================
+     CONTROLS — クリック / ボタン / キーボード / スワイプ
+     ============================================================ */
+  document.getElementById('btnNext').addEventListener('click', next);
+  document.getElementById('btnPrev').addEventListener('click', prev);
+  document.getElementById('tapNext').addEventListener('click', next);
+  document.getElementById('tapPrev').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { goTo(0); }
+    else if (e.key === 'End') { goTo(TOTAL - 1); }
+  });
+
+  /* swipe (touch + pointer drag) */
+  var sx = 0, sy = 0, tracking = false;
+  function start(x, y) { sx = x; sy = y; tracking = true; }
+  function end(x, y) {
+    if (!tracking) return;
+    tracking = false;
+    var dx = x - sx, dy = y - sy;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) next(); else prev();
+    }
+  }
+  deck.addEventListener('touchstart', function (e) { var t = e.changedTouches[0]; start(t.clientX, t.clientY); }, { passive: true });
+  deck.addEventListener('touchend', function (e) { var t = e.changedTouches[0]; end(t.clientX, t.clientY); }, { passive: true });
+
+  var mouseDown = false;
+  deck.addEventListener('mousedown', function (e) { mouseDown = true; start(e.clientX, e.clientY); });
+  window.addEventListener('mouseup', function (e) { if (mouseDown) { mouseDown = false; end(e.clientX, e.clientY); } });
+
+  /* hint auto-hide */
+  var hint = document.getElementById('hint');
+  var hintGone = false;
+  function hideHint() { if (!hintGone) { hintGone = true; hint.classList.add('gone'); } }
+  setTimeout(hideHint, 4200);
+
+  /* theme toggle (localStorage 永続) */
+  var themeBtn = document.getElementById('themeToggle');
+  try {
+    var saved = localStorage.getItem('lumiere-theme');
+    if (saved) document.body.setAttribute('data-theme', saved);
+  } catch (e) {}
+  themeBtn.addEventListener('click', function () {
+    var b = document.body;
+    var nt = b.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    b.setAttribute('data-theme', nt);
+    try { localStorage.setItem('lumiere-theme', nt); } catch (e) {}
+  });
+
+  /* リサイズ時に現在スライドを再フィット（デバウンス）。
+     ResizeObserver で deck の寸法変化を監視。rAF で1フレームに集約。 */
+  var fitRaf = 0;
+  function scheduleFit() {
+    if (fitRaf) return;
+    fitRaf = requestAnimationFrame(function () { fitRaf = 0; fitCurrent(); });
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    var ro = new ResizeObserver(scheduleFit);
+    ro.observe(deck);
+  } else {
+    window.addEventListener('resize', scheduleFit, { passive: true });
+  }
+  // フォント読み込み完了後に一度再計算（メトリクスのズレ対策）
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { fitCurrent(); });
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
